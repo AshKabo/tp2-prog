@@ -4,7 +4,7 @@ Votre description du programme
 @matricules     e6250834 et eYYYYYY
 @date              18-05-2024
 '''
-
+import csv
 
 
 class DonneesGeo:
@@ -47,4 +47,15 @@ class DonneesGeo:
 
     def __str__(self):
         return f"Ville: {self.ville} Pays: {self.pays} Latitude: {self.latitude} Longitude: {self.longitude}"
-    
+
+def lireDonneesCsv(fi_csv):
+    donnees = []
+    with open(fi_csv, newline="") as fichier_csv :
+        lecteur_csv = csv.reader(fichier_csv)
+        for ligne in lecteur_csv :
+            ville = ligne[0]
+            pays = ligne[1]
+            latitude = ligne[2]
+            longitude = ligne[3]
+            donnees.append(DonneesGeo(ville,pays,latitude,longitude))
+    return donnees
