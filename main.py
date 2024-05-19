@@ -83,8 +83,23 @@ def Distance(la1, lo1, la2, lo2):
     dist = 2 * r * math.asin(math.sqrt((math.sin(delt_la / 2.0) ** 2 + math.cos(rad_la1) * math.cos(rad_la2) * math.sin(delt_lo / 2.0) ** 2)))
     return dist
 
-def trouverDistanceMin(nomFichier):
-    ##### continu math ici
+def trouverDistance(fi_json):
+    with open(fi_json, "r", encoding="utf-8") as h:
+        donnees = json.load(h)
+        objgeo = [DonneesGeo(**i) for i in donnees]
+
+    dist_min= float("inf")
+    ville1, ville2= None, None
+
+    distance_calc = []
+
+    for i in range(len(objgeo)):
+        for L in range(i+1, len(objgeo)):
+            dist= Distance(objgeo[1].latitude, objgeo[1].longitude, objgeo[L].latitude, objgeo[L].longitude)
+            distance_calc.append(objgeo[i], objgeo[L], dist)
+            if dist < dist_min:
+                dist_min=dist
+                ville1, ville2 = objgeo[i], objgeo[L]
 
 def menu():
     print("\nMenu: ")
@@ -95,7 +110,3 @@ def menu():
 
 def menu_princ():
     #### continu le menu ici
-
-
-
-
