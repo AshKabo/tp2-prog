@@ -5,7 +5,7 @@ Votre description du programme
 @date              18-05-2024
 '''
 import csv
-
+import json
 
 class DonneesGeo:
     def __init__(self, ville, pays, latitude, longitude):
@@ -59,3 +59,9 @@ def lireDonneesCsv(fi_csv):
             longitude = ligne[3]
             donnees.append(DonneesGeo(ville,pays,latitude,longitude))
     return donnees
+
+def ecrireDonneesJson(fi_json, donnees):
+    dico={"ville": donnees[0], "pays": donnees[1], "latitude": donnees[2], "longitude": donnees[3]}
+
+    with open(fi_json, "r+") as fichier_json :
+        json.dump(dico, fichier_json)
