@@ -13,8 +13,8 @@ class DonneesGeo:
     def __init__(self, ville, pays, latitude, longitude):
         self.ville = ville
         self.pays = pays
-        self.latitude = latitude
-        self.longitude = longitude
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
     @property
     def v(self):
         return self.ville
@@ -69,7 +69,7 @@ def ecrireDonneesJson(fi_json, donnees):
         json.dump(dico, fichier_json)
 
 def Distance(la1, lo1, la2, lo2):
-    r = 6371
+    r = 6371 #rayon de la terre en KM
     rad_la1 = math.radians(la1)
     rad_la2 = math.radians(la2)
     delt_la = math.radians(la2 - la1)
