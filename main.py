@@ -5,6 +5,8 @@ Votre description du programme
 @date              18-05-2024
 '''
 import csv
+import json
+import math
 
 
 class DonneesGeo:
