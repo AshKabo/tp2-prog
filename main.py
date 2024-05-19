@@ -54,12 +54,15 @@ def lireDonneesCsv(fi_csv):
     donnees = []
     with open(fi_csv, newline="") as fichier_csv :
         lecteur_csv = csv.reader(fichier_csv)
+        #affetctation de chaque elements de la ligne a son attribut dans la classe DonnesGeo
         for ligne in lecteur_csv :
             ville = ligne[0]
             pays = ligne[1]
             latitude = ligne[2]
             longitude = ligne[3]
-            donnees.append(DonneesGeo(ville,pays,latitude,longitude))
+            donnees.append(DonneesGeo(ville,pays,latitude,longitude)) #a partir de l'affectation, creer un object
+                                                                    #DonneesGeo pour chaque ligne du fichier csv et
+                                                                    #rajoute ces objet dans une liste pour le print
     return donnees
 
 def ecrireDonneesJson(fi_json, donnees):
@@ -70,12 +73,29 @@ def ecrireDonneesJson(fi_json, donnees):
 
 def Distance(la1, lo1, la2, lo2):
     r = 6371 #rayon de la terre en KM
+    #transformation en radians des valeurs et deltas necessaires a la formule
     rad_la1 = math.radians(la1)
     rad_la2 = math.radians(la2)
     delt_la = math.radians(la2 - la1)
     delt_lo = math.radians(lo2 - lo1)
 
-    calc_1 = math.sin(delt_la / 2.0) ** 2 + math.cos(rad_la1) * math.cos(rad_la2) * math.sin(delt_lo / 2.0) ** 2
-    calc_2 = 2 * math.atan2(math.sqrt(calc_1), math.sqrt(1 - calc_1))
-    dist = calc_2 * r
+    #La formule de Haversine
+    dist = 2 * r * math.asin(math.sqrt((math.sin(delt_la / 2.0) ** 2 + math.cos(rad_la1) * math.cos(rad_la2) * math.sin(delt_lo / 2.0) ** 2)))
     return dist
+
+def trouverDistanceMin(nomFichier):
+    ##### continu math ici
+
+def menu():
+    print("\nMenu: ")
+    print("1- Lire les données du fichier csv, créer les objets et afficher les données.")
+    print("2- Sauvegarder les données dans un fichier .json.")
+    print("3- Lire les données du fichier .json, déterminer et afficher les données associées à la distance minimale entre deux villes et sauvegarder les calculs dans distances.csv.")
+    print("Entrez un numéro pour choisir une option ou appuyez sur 'q' pour quitter :")
+
+def menu_princ():
+    #### continu le menu ici
+
+
+
+
