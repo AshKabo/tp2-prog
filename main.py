@@ -79,3 +79,22 @@ def Distance(la1, lo1, la2, lo2):
     calc_2 = 2 * math.atan2(math.sqrt(calc_1), math.sqrt(1 - calc_1))
     dist = calc_2 * r
     return dist
+
+
+def trouverDistance(fi_json):
+    with open(fi_json, "r", encoding="utf-8") as h:
+        donnees = json.load(h)
+        objgeo = [DonneesGeo(**i) for i in donnees]
+
+    dist_min= float("inf")
+    ville1, ville2= None, None
+
+    distance_calc = []
+
+    for i in range(len(objgeo)):
+        for L in range(i+1, len(objgeo)):
+            dist= Distance(objgeo[1].latitude, objgeo[1].longitude, objgeo[L].latitude, objgeo[L].longitude)
+            distance_calc.append(objgeo[i], objgeo[L], dist)
+            if dist < dist_min:
+                dist_min=dist
+                ville1, ville2 = objgeo[i], objgeo[L]
