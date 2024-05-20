@@ -101,12 +101,41 @@ def trouverDistance(fi_json):
                 dist_min=dist
                 ville1, ville2 = objgeo[i], objgeo[L]
 
-def menu():
+def menu_princ():
     print("\nMenu: ")
     print("1- Lire les données du fichier csv, créer les objets et afficher les données.")
     print("2- Sauvegarder les données dans un fichier .json.")
     print("3- Lire les données du fichier .json, déterminer et afficher les données associées à la distance minimale entre deux villes et sauvegarder les calculs dans distances.csv.")
     print("Entrez un numéro pour choisir une option ou appuyez sur 'q' pour quitter :")
 
-def menu_princ():
-    #### continu le menu ici
+def menu():
+    donnees = []
+    json = False #indique si le fichier .json a ete sauvegarde
+    while True:
+        menu_princ() #affiche le menu principal
+        choix = input("Veuillez entrer votre choix: ").strip()
+        if choix == '1':
+            donnees = lireDonneesCsv('donnees_geo.csv')
+            print("Voici les données lues du fichier CSV :")
+            for donnee in donnees:
+                print(donnee) #lecture et impression des donnes lu dans le fichier csv
+                              #avec la fonction lireDonneesCsv
+            input("Appuyez sur une touche pour continuer...")
+        elif choix == '2':
+            if not donnees: #assure que les donnees ont ete lues avant de pouvoir sauvegarder en .json
+                print("Lisez les données du fichier .csv avant de les sauvegarder en .json")
+            else:
+                ecrireDonneesJson('donnees_geo.json', donnees)
+                json = True
+        elif choix == '3':
+            if not json: #assure que les donnees ont ete sauvegardees en .json avant calcul
+                print("Sauvegardez les données en .json avant de calculer les distances.")
+            else:
+                trouverDistance('donnees_geo.json')
+                input("Appuyez sur une touche pour continuer...")
+        elif choix == 'q':
+            break
+        else:
+            print("Choix invalide. Veuillez selectionner une option valide.")
+
+menu()
