@@ -1,7 +1,7 @@
 '''
 Votre description du programme
 @auteur(e)s     X.Ashtonn X.Kabore et Y.Loic Y.Arson
-@matricules     e6250834 et eYYYYYY
+@matricules     e6250834 et e6242959
 @date              18-05-2024
 '''
 import csv
@@ -65,11 +65,21 @@ def lireDonneesCsv(fi_csv):
                                                                     #rajoute ces objet dans une liste pour le print
     return donnees
 
-def ecrireDonneesJson(fi_json, donnees):
-    dico={"ville": donnees[0], "pays": donnees[1], "latitude": donnees[2], "longitude": donnees[3]}
 
-    with open(fi_json, "r+") as fichier_json :
-        json.dump(dico, fichier_json)
+def ecrireDonneesJson(fi_json, liste_donnees):
+    liste_dicts = []
+    for donnees in liste_donnees:
+        dico = {
+            "ville": donnees[0],
+            "pays": donnees[1],
+            "latitude": donnees[2],
+            "longitude": donnees[3]
+        }
+        liste_dicts.append(dico)
+
+    # Écrire la liste de dictionnaires dans le fichier JSON avec indentation
+    with open(fi_json, 'w', encoding='utf-8') as fichier_json:
+        json.dump(liste_dicts, fichier_json)
 
 def Distance(la1, lo1, la2, lo2):
     r = 6371 #rayon de la terre en KM
@@ -101,6 +111,17 @@ def trouverDistance(fi_json):
                 dist_min=dist
                 ville1, ville2 = objgeo[i], objgeo[L]
 
+
+            #affiche les villes et leur distance minimale
+        if ville1 and ville2:
+            print(f" la distance entre la ville numéro 1 {ville1.ville}et la ville numéro 2{ville2.ville} est de {dist_min}")
+
+#sert à enregistrer les données obtenues dans un fichier csv
+    with open("distance.csv", mode="w", encoding="utf-8") as fi_csv:
+        L=csv.writer(fi_csv)
+        L.writerow(["Ville #1","Pays #1", "Ville #2", "Pays #2", "Distance minimale entre ces deux villes"])
+        for ville1, ville2, dist in distance_calc :
+            L.writerow([ville1.ville, ville1.pays, ville1.longitude, ville1.latitude, ville2.ville, ville2.pays, ville2.longitude, ville2.latitude])
 def menu_princ():
     print("\nMenu: ")
     print("1- Lire les données du fichier csv, créer les objets et afficher les données.")
