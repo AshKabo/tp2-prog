@@ -54,6 +54,7 @@ def lireDonneesCsv(fi_csv):
     donnees = []
     with open(fi_csv, newline="") as fichier_csv :
         lecteur_csv = csv.reader(fichier_csv)
+        next(lecteur_csv)
         #affetctation de chaque elements de la ligne a son attribut dans la classe DonnesGeo
         for ligne in lecteur_csv :
             ville = ligne[0]
@@ -68,18 +69,20 @@ def lireDonneesCsv(fi_csv):
 
 def ecrireDonneesJson(fi_json, liste_donnees):
     liste_dicts = []
-    for donnees in liste_donnees:
-        dico = {
-            "ville": donnees[0],
-            "pays": donnees[1],
-            "latitude": donnees[2],
-            "longitude": donnees[3]
-        }
-        liste_dicts.append(dico)
+    for obj in liste_donnees:
+        #affecte chaque ligne a un dictionnaire, cle-valeur pour chaque elements
+        dict_obj = {
+            "ville": obj.ville,
+            "pays": obj.pays,
+            "latitude": obj.latitude,
+            "longitude": obj.longitude
+                    }
+        liste_dicts.append(dict_obj)
+    with open(fi_json, mode="w", encoding="utf-8") as fichier:
+        json.dump(liste_dicts, fichier, indent=3)
+    print(f"Les donnees sont sauvegardees dans {fi_json}")
 
-    # Écrire la liste de dictionnaires dans le fichier JSON avec indentation
-    with open(fi_json, 'w', encoding='utf-8') as fichier_json:
-        json.dump(liste_dicts, fichier_json)
+
 
 def Distance(la1, lo1, la2, lo2):
     r = 6371 #rayon de la terre en KM
@@ -127,7 +130,7 @@ def menu_princ():
     print("1- Lire les données du fichier csv, créer les objets et afficher les données.")
     print("2- Sauvegarder les données dans un fichier .json.")
     print("3- Lire les données du fichier .json, déterminer et afficher les données associées à la distance minimale entre deux villes et sauvegarder les calculs dans distances.csv.")
-    print("Entrez un numéro pour choisir une option ou appuyez sur 'q' pour quitter :")
+    print("Entrez un numéro pour choisir une option ou appuyez sur 'q' pour quitter ")
 
 def menu():
     donnees = []
@@ -136,12 +139,12 @@ def menu():
         menu_princ() #affiche le menu principal
         choix = input("Veuillez entrer votre choix: ").strip()
         if choix == '1':
-            donnees = lireDonneesCsv('donnees_geo.csv')
-            print("Voici les données lues du fichier CSV :")
+            donnees = lireDonneesCsv('Donnees.csv')
+            print("\nVoici les données lues du fichier CSV :")
             for donnee in donnees:
                 print(donnee) #lecture et impression des donnes lu dans le fichier csv
                               #avec la fonction lireDonneesCsv
-            input("Appuyez sur une touche pour continuer...")
+            input("\nAppuyez sur enter pour continuer...")
         elif choix == '2':
             if not donnees: #assure que les donnees ont ete lues avant de pouvoir sauvegarder en .json
                 print("Lisez les données du fichier .csv avant de les sauvegarder en .json")
@@ -153,10 +156,9 @@ def menu():
                 print("Sauvegardez les données en .json avant de calculer les distances.")
             else:
                 trouverDistance('donnees_geo.json')
-                input("Appuyez sur une touche pour continuer...")
+                input("Appuyez sur enter pour continuer...")
         elif choix == 'q':
             break
         else:
             print("Choix invalide. Veuillez selectionner une option valide.")
-
 menu()
